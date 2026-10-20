@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import styles from "./EnvelopeLetter.module.css";
 import { Heart, Mail, Sparkles, X, BookOpen } from "lucide-react";
 import { triggerBlossomExplosion } from "@/utils/flowerConfetti";
@@ -11,7 +12,12 @@ interface EnvelopeLetterProps {
 
 export default function EnvelopeLetter({ recipientName }: EnvelopeLetterProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [likes, setLikes] = useState(0);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const displayName = recipientName?.trim() || "Chang";
   const isPrefixPresent = /^(bạn|em|bé|cô)/i.test(displayName);
@@ -58,6 +64,85 @@ export default function EnvelopeLetter({ recipientName }: EnvelopeLetterProps) {
     triggerBlossomExplosion(x, y);
   };
 
+  const modalElement = isModalOpen ? (
+    <div
+      className={styles.modalOverlay}
+      onClick={handleCloseModal}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        className={styles.modalPaper}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Top Close Button */}
+        <button
+          className={styles.closeModalBtn}
+          onClick={handleCloseModal}
+          aria-label="Đóng bức thư"
+        >
+          <X size={20} />
+        </button>
+
+        <div className={styles.paperHeader}>
+          <h2 className={styles.paperGreeting}>
+            Gửi {displayName} – người bạn tuyệt vời của tớ!
+          </h2>
+          <span className={styles.paperBadge}>20/10/2026</span>
+        </div>
+
+        <div className={styles.letterBody}>
+          <p>
+            Nhân ngày 20/10, tớ viết mấy dòng này gửi tặng Chang – người bạn lúc nào cũng mang lại tiếng cười, sự ấm áp và nguồn năng lượng tích cực cho mọi người xung quanh.
+          </p>
+
+          <p>
+            Thời gian trôi thật nhanh, cảm ơn Chang vì đã luôn là một người bạn đáng yêu, thấu hiểu và chân thành. Được quen biết và đồng hành cùng Chang là một điều rất tuyệt vời và đáng quý đối với tớ.
+          </p>
+
+          <div className={styles.letterPoem}>
+            &ldquo;Mong bạn một đời bình an, nhiều may mắn,<br />
+            Nụ cười luôn trong trẻo tựa ánh ban mai.<br />
+            Dù đường đời dẫu có lắm chông gai,<br />
+            Hãy luôn nhớ: Bên cạnh bạn luôn có những người bạn đồng hành!&rdquo;
+          </div>
+
+          <p>
+            20/10 năm nay, chúc Chang luôn giữ trọn nụ cười rạng rỡ trên môi, mỗi ngày mới đều có thật nhiều niềm vui. Chúc bạn học tập và công việc thật suôn sẻ, tự tin đạt được những mục tiêu mà bạn hằng ấp ủ. Nhớ là đừng bao giờ tạo quá nhiều áp lực cho bản thân nhé; hãy luôn ăn ngon miệng, ngủ đủ giấc, thích chiếc váy nào thì cứ tự tin diện, và yêu thương bản thân mình thật nhiều!
+          </p>
+
+          <p>
+            Dù mai này cuộc sống có bận rộn đến đâu, chúc tình bạn của chúng mình vẫn mãi bền đẹp và luôn có thật nhiều kỷ niệm đáng nhớ cùng nhau.
+          </p>
+
+          <p style={{ marginTop: "14px", fontWeight: 600, color: "#930d37" }}>
+            Chúc mừng ngày 20/10 bạn Chang nhé! Chúc bạn luôn tự tin, xinh đẹp và ngập tràn hạnh phúc! 🌸✨
+          </p>
+        </div>
+
+        <div className={styles.letterSignature}>
+          <div className={styles.signRole}>Người bạn luôn đồng hành và ủng hộ,</div>
+          <div className={styles.signName}>Bạn của Chang 💕</div>
+        </div>
+
+        <div className={styles.letterActions}>
+          <button className={styles.heartBtn} onClick={handleHeartClick}>
+            <Heart size={16} fill="#fff" />
+            <span>Thả tim cho bạn Chang {likes > 0 && `(${likes})`}</span>
+          </button>
+
+          <button
+            className={styles.closeLetterBtn}
+            onClick={handleCloseModal}
+            title="Đóng bức thư"
+          >
+            <span>Đóng thư</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  ) : null;
+
   return (
     <section className={styles.letterSection}>
       {/* Sealed Envelope Card on the main page */}
@@ -98,85 +183,8 @@ export default function EnvelopeLetter({ recipientName }: EnvelopeLetterProps) {
         </div>
       </div>
 
-      {/* POPUP MODAL VIEW */}
-      {isModalOpen && (
-        <div
-          className={styles.modalOverlay}
-          onClick={handleCloseModal}
-          role="dialog"
-          aria-modal="true"
-        >
-          <div
-            className={styles.modalPaper}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Top Close Button */}
-            <button
-              className={styles.closeModalBtn}
-              onClick={handleCloseModal}
-              aria-label="Đóng bức thư"
-            >
-              <X size={20} />
-            </button>
-
-            <div className={styles.paperHeader}>
-              <h2 className={styles.paperGreeting}>
-                Gửi {displayName} – người bạn tuyệt vời của tớ!
-              </h2>
-              <span className={styles.paperBadge}>20/10/2026</span>
-            </div>
-
-            <div className={styles.letterBody}>
-              <p>
-                Nhân ngày 20/10, tớ viết mấy dòng này gửi tặng Chang – người bạn lúc nào cũng mang lại tiếng cười, sự ấm áp và nguồn năng lượng tích cực cho mọi người xung quanh.
-              </p>
-
-              <p>
-                Thời gian trôi thật nhanh, cảm ơn Chang vì đã luôn là một người bạn đáng yêu, thấu hiểu và chân thành. Được quen biết và đồng hành cùng Chang là một điều rất tuyệt vời và đáng quý đối với tớ.
-              </p>
-
-              <div className={styles.letterPoem}>
-                &ldquo;Mong bạn một đời bình an, nhiều may mắn,<br />
-                Nụ cười luôn trong trẻo tựa ánh ban mai.<br />
-                Dù đường đời dẫu có lắm chông gai,<br />
-                Hãy luôn nhớ: Bên cạnh bạn luôn có những người bạn đồng hành!&rdquo;
-              </div>
-
-              <p>
-                20/10 năm nay, chúc Chang luôn giữ trọn nụ cười rạng rỡ trên môi, mỗi ngày mới đều có thật nhiều niềm vui. Chúc bạn học tập và công việc thật suôn sẻ, tự tin đạt được những mục tiêu mà bạn hằng ấp ủ. Nhớ là đừng bao giờ tạo quá nhiều áp lực cho bản thân nhé; hãy luôn ăn ngon miệng, ngủ đủ giấc, thích chiếc váy nào thì cứ tự tin diện, và yêu thương bản thân mình thật nhiều!
-              </p>
-
-              <p>
-                Dù mai này cuộc sống có bận rộn đến đâu, chúc tình bạn của chúng mình vẫn mãi bền đẹp và luôn có thật nhiều kỷ niệm đáng nhớ cùng nhau.
-              </p>
-
-              <p style={{ marginTop: "14px", fontWeight: 600, color: "#930d37" }}>
-                Chúc mừng ngày 20/10 bạn Chang nhé! Chúc bạn luôn tự tin, xinh đẹp và ngập tràn hạnh phúc! 🌸✨
-              </p>
-            </div>
-
-            <div className={styles.letterSignature}>
-              <div className={styles.signRole}>Người bạn luôn đồng hành và ủng hộ,</div>
-              <div className={styles.signName}>Bạn của Chang 💕</div>
-            </div>
-
-            <div className={styles.letterActions}>
-              <button className={styles.heartBtn} onClick={handleHeartClick}>
-                <Heart size={16} fill="#fff" />
-                <span>Thả tim cho bạn Chang {likes > 0 && `(${likes})`}</span>
-              </button>
-
-              <button
-                className={styles.closeLetterBtn}
-                onClick={handleCloseModal}
-                title="Đóng bức thư"
-              >
-                <span>Đóng thư</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Portal to document.body: Guarantees Topmost Stacking and True Centering */}
+      {mounted && modalElement && createPortal(modalElement, document.body)}
     </section>
   );
 }
