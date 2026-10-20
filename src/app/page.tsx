@@ -16,7 +16,7 @@ import { romanticAudio } from "@/utils/audioPlayer";
 function MainContent() {
   const searchParams = useSearchParams();
   const [isBloomed, setIsBloomed] = useState(false);
-  const [recipientName, setRecipientName] = useState("Thanh");
+  const [recipientName, setRecipientName] = useState("Chang");
   const [isPersonalizeOpen, setIsPersonalizeOpen] = useState(false);
 
   useEffect(() => {
@@ -89,12 +89,12 @@ function MainContent() {
               <h1 className={styles.heroTitle}>
                 <span className="text-rose-gradient">Chúc Mừng Ngày 20/10</span>
                 <span className={styles.recipientHighlight}>
-                  {recipientName ? `Thương Gửi Em ${recipientName} ✨` : "Gửi Tặng Em Gái Nhỏ 🌸"}
+                  {recipientName ? `Thương Gửi Bạn ${recipientName} ✨` : "Gửi Tặng Bạn Chang 🌸"}
                 </span>
               </h1>
 
               <p className={styles.heroSubtitle}>
-                Gửi cô em gái nhỏ của anh! Chúc Thanh có một ngày 20/10 thật vui vẻ, lúc nào cũng cười tươi như hoa và luôn hạnh phúc, bình yên với những gì em đang theo đuổi.
+                Gửi bạn Chang! Chúc Chang có một ngày 20/10 thật vui vẻ, lúc nào cũng cười tươi như hoa và luôn hạnh phúc, bình yên với những gì bạn đang theo đuổi.
               </p>
             </section>
 
@@ -120,10 +120,10 @@ function MainContent() {
             {/* Romantic Footer */}
             <footer className={styles.footer}>
               <p>
-                Em gái sinh ra là để được yêu thương, chiều chuộng và sống thật rực rỡ.
+                Phụ nữ sinh ra là để được nâng niu, trân trọng và sống một đời thật rực rỡ.
               </p>
               <p style={{ marginTop: "6px" }}>
-                Cả nhà luôn ở bên và tự hào về em gái nhỏ <Heart size={14} className={styles.footerHeart} fill="#ff4371" /> 20/10/2026
+                Chúc Chang luôn hạnh phúc và ngập tràn niềm vui <Heart size={14} className={styles.footerHeart} fill="#ff4371" /> 20/10/2026
               </p>
               <button
                 className={styles.replayBtn}

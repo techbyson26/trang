@@ -20,7 +20,7 @@ const WISHES_DATA: WishCardItem[] = [
     tag: "Nhan Sắc & Nụ Cười",
     title: "Rạng Rỡ & Xinh Tươi",
     message:
-      "Chúc em luôn giữ trọn nét hồn nhiên, đôi mắt sáng và nụ cười rạng ngời như ánh nắng sớm ban mai. Mong cô em gái nhỏ lúc nào cũng tươi tắn, yêu đời và tự tin tỏa sáng với vẻ duyên dáng rất riêng!",
+      "Chúc Chang luôn giữ trọn nét hồn nhiên, đôi mắt sáng và nụ cười rạng ngời như ánh nắng sớm ban mai. Mong bạn lúc nào cũng tươi tắn, yêu đời và tự tin tỏa sáng với vẻ duyên dáng rất riêng!",
     icon: <Smile size={24} color="#ff7597" />,
     glowColor: "rgba(255, 67, 113, 0.4)",
   },
@@ -29,7 +29,7 @@ const WISHES_DATA: WishCardItem[] = [
     tag: "Bình Yên & Niềm Vui",
     title: "Mỗi Ngày Đều An Nhiên",
     message:
-      "Mong cuộc sống luôn đối đãi với em thật dịu dàng. Chúc Thanh có những sớm mai thảnh thơi, ăn những món ngon em thích, ghé những nơi em mơ và tối về luôn có những giấc ngủ thật say nồng, trút bỏ mọi âu lo.",
+      "Mong cuộc sống luôn đối đãi với Chang thật dịu dàng. Chúc bạn có những sớm mai thảnh thơi, ăn những món ngon bạn thích, ghé những nơi bạn mơ và tối về luôn có những giấc ngủ thật say nồng, trút bỏ mọi âu lo.",
     icon: <Sun size={24} color="#f6c86a" />,
     glowColor: "rgba(246, 200, 106, 0.4)",
   },
@@ -38,16 +38,16 @@ const WISHES_DATA: WishCardItem[] = [
     tag: "Tương Lai & Ước Mơ",
     title: "Bản Lĩnh Chạm Tới Ước Mơ",
     message:
-      "Hãy kiên định bước trên con đường em đã chọn nhé. Chúc em gái luôn thông minh, dũng cảm theo đuổi đam mê, gặt hái thật nhiều thành tích và sớm chạm tới mọi ước mơ mà em hằng ấp ủ!",
+      "Hãy kiên định bước trên con đường bạn đã chọn nhé. Chúc Chang luôn thông minh, bản lĩnh theo đuổi đam mê, gặt hái thật nhiều thành tích và sớm chạm tới mọi ước mơ mà bạn hằng ấp ủ!",
     icon: <Compass size={24} color="#ff9ebb" />,
     glowColor: "rgba(255, 158, 187, 0.4)",
   },
   {
     id: "love",
-    tag: "Gia Đình & Điểm Tựa",
-    title: "Hậu Phương Luôn Bên Em",
+    tag: "Tình Bạn & Điểm Tựa",
+    title: "Bạn Bè Luôn Bên Cạnh",
     message:
-      "Dù ngoài kia có áp lực hay thử thách thế nào, hãy nhớ rằng gia đình và anh luôn là bến đỗ bình yên nhất. Với cả nhà, Thanh mãi là cô em gái quý giá và được thương yêu vô điều kiện.",
+      "Dù ngoài kia có áp lực hay thử thách thế nào, hãy nhớ rằng bạn bè và mọi người luôn là điểm tựa ấm áp. Với tất cả mọi người, Chang luôn là một người bạn tuyệt vời và đáng trân trọng.",
     icon: <HeartHandshake size={24} color="#ffd166" />,
     glowColor: "rgba(255, 209, 102, 0.4)",
   },

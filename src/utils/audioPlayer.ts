@@ -1,15 +1,16 @@
 "use client";
 
 // Romantic Audio Manager
-// Plays the classical, romantic Canon in D masterpiece starting from second 12
-// Smooth volume fade-in, looping from 12s, and play/pause controls
+// Plays the classical, romantic Canon in D masterpiece starting from custom second
+// Smooth volume fade-in, seamless looping, and rock-solid timestamp seeking
 
 class RomanticAudioManager {
   private audio: HTMLAudioElement | null = null;
   private isPlaying: boolean = false;
-  private targetVolume: number = 1.333;
+  private targetVolume: number = 1.0;
   private fadeInterval: NodeJS.Timeout | null = null;
   private startTimeSeconds: number = 60;
+  private hasSeekedToStart: boolean = false;
 
   constructor() {
     if (typeof window !== "undefined") {
@@ -20,22 +21,51 @@ class RomanticAudioManager {
   private initAudio() {
     if (this.audio) return;
     this.audio = new Audio("/music/romantic.mp3");
-    this.audio.loop = false; // Manually loop to second 12
+    this.audio.loop = false;
     this.audio.preload = "auto";
     this.audio.volume = 0;
 
-    // Set seek position to second 12 as soon as metadata is ready
-    this.audio.addEventListener("loadedmetadata", () => {
-      if (this.audio && this.audio.currentTime < this.startTimeSeconds - 0.2) {
-        this.audio.currentTime = this.startTimeSeconds;
+    const enforceSeek = () => {
+      if (this.audio && !this.hasSeekedToStart) {
+        try {
+          this.audio.currentTime = this.startTimeSeconds;
+          if (Math.abs(this.audio.currentTime - this.startTimeSeconds) < 1.5) {
+            this.hasSeekedToStart = true;
+          }
+        } catch {
+          // Retry on subsequent events
+        }
+      }
+    };
+
+    // Attempt seek when metadata is loaded
+    this.audio.addEventListener("loadedmetadata", enforceSeek);
+
+    // Attempt seek when browser can play through/buffered enough
+    this.audio.addEventListener("canplay", enforceSeek);
+
+    // Safety net: If browser starts playing from 0s before buffering 60s,
+    // force jump to second 60 on the very first playback tick
+    this.audio.addEventListener("timeupdate", () => {
+      if (!this.hasSeekedToStart && this.audio) {
+        if (this.audio.currentTime < this.startTimeSeconds - 0.5) {
+          try {
+            this.audio.currentTime = this.startTimeSeconds;
+            this.hasSeekedToStart = true;
+          } catch {
+            // Keep trying until buffer is ready
+          }
+        } else {
+          this.hasSeekedToStart = true;
+        }
       }
     });
 
-    // When the audio finishes, loop back to second 12 seamlessly
+    // When song ends, loop back to the configured start time
     this.audio.addEventListener("ended", () => {
       if (this.audio) {
         this.audio.currentTime = this.startTimeSeconds;
-        this.audio.play().catch(() => { });
+        this.audio.play().catch(() => {});
       }
     });
 
@@ -45,16 +75,27 @@ class RomanticAudioManager {
 
     this.audio.addEventListener("playing", () => {
       this.isPlaying = true;
+      if (this.audio && this.audio.currentTime < this.startTimeSeconds - 0.5) {
+        try {
+          this.audio.currentTime = this.startTimeSeconds;
+          this.hasSeekedToStart = true;
+        } catch {}
+      }
     });
   }
 
-  private fadeIn(durationMs: number = 1500) {
+  private getClampedVolume(): number {
+    return Math.max(0, Math.min(1, this.targetVolume));
+  }
+
+  private fadeIn(durationMs: number = 1200) {
     if (!this.audio) return;
     if (this.fadeInterval) clearInterval(this.fadeInterval);
 
+    const safeTarget = this.getClampedVolume();
     const stepTime = 50;
     const steps = durationMs / stepTime;
-    const volumeStep = this.targetVolume / steps;
+    const volumeStep = safeTarget / Math.max(1, steps);
 
     this.audio.volume = 0;
     this.fadeInterval = setInterval(() => {
@@ -62,30 +103,48 @@ class RomanticAudioManager {
         if (this.fadeInterval) clearInterval(this.fadeInterval);
         return;
       }
-      if (this.audio.volume + volumeStep < this.targetVolume) {
-        this.audio.volume += volumeStep;
+      if (this.audio.volume + volumeStep < safeTarget) {
+        this.audio.volume = Math.min(1, this.audio.volume + volumeStep);
       } else {
-        this.audio.volume = this.targetVolume;
+        this.audio.volume = safeTarget;
         if (this.fadeInterval) clearInterval(this.fadeInterval);
       }
     }, stepTime);
+  }
+
+  public setStartTime(seconds: number): void {
+    this.startTimeSeconds = Math.max(0, seconds);
+    this.hasSeekedToStart = false;
+    if (this.audio) {
+      try {
+        this.audio.currentTime = this.startTimeSeconds;
+      } catch {}
+    }
   }
 
   public async play(): Promise<boolean> {
     this.initAudio();
     if (!this.audio) return false;
 
-    // Skip the beginning, jump directly to second 12
-    if (this.audio.currentTime < this.startTimeSeconds - 0.2) {
+    try {
       this.audio.currentTime = this.startTimeSeconds;
-    }
+    } catch {}
 
     try {
       await this.audio.play();
       this.isPlaying = true;
+
+      // Ensure seek right after play starts
+      if (this.audio.currentTime < this.startTimeSeconds - 0.5) {
+        try {
+          this.audio.currentTime = this.startTimeSeconds;
+          this.hasSeekedToStart = true;
+        } catch {}
+      }
+
       this.fadeIn(1200);
       return true;
-    } catch (err) {
+    } catch {
       this.isPlaying = false;
       return false;
     }
@@ -125,7 +184,7 @@ class RomanticAudioManager {
     this.play().then((success) => {
       if (!success) {
         // Fallback: If browser policy blocks autoplay with zero interaction,
-        // trigger playback on the earliest possible user action (touch, click, scroll, key, focus)
+        // trigger playback on the earliest possible user action
         const events = [
           "pointerdown",
           "pointerup",

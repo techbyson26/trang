@@ -189,11 +189,11 @@ export default function RosePortal({ onBloomComplete }: RosePortalProps) {
       {/* Interactive Guidance Prompt */}
       <div className={styles.promptBadge} onClick={handleClickFlower}>
         <Heart className={styles.heartIcon} size={18} fill="#ff4371" />
-        <span className={styles.promptText}>Chạm nhẹ vào đóa hoa để mở món quà bí mật cho em gái ✨</span>
+        <span className={styles.promptText}>Chạm nhẹ vào đóa hoa để mở món quà bí mật cho bạn Chang ✨</span>
         <Sparkles className={styles.sparkleIcon} size={18} />
       </div>
 
-      <div className={styles.dateSub}>20 Tháng 10 • Yêu Thương Gửi Tặng Em Thanh</div>
+      <div className={styles.dateSub}>20 Tháng 10 • Yêu Thương Gửi Tặng Bạn Chang</div>
     </div>
   );
 }

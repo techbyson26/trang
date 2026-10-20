@@ -24,12 +24,12 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Chúc Mừng 20/10 Em Gái 🌸 - Thương Gửi Thanh",
-  description: "Món quà thiệp hoa và những lời chúc yêu thương nhất gửi tặng cô em gái nhỏ tên Thanh nhân ngày 20/10.",
-  keywords: ["20/10", "chúc mừng 20/10", "em gái", "Thanh", "thiệp 20/10 tặng em gái"],
+  title: "Chúc Mừng 20/10 🌸 - Thương Gửi Bạn Chang",
+  description: "Món quà thiệp hoa và những lời chúc yêu thương nhất gửi tặng bạn Chang nhân ngày 20/10.",
+  keywords: ["20/10", "chúc mừng 20/10", "bạn Chang", "Chang", "thiệp 20/10 tặng bạn"],
   openGraph: {
-    title: "Chúc Mừng 20/10 - Thương Gửi Em Thanh 💐",
-    description: "Chạm vào đóa hoa để mở bức thư yêu thương và cơn mưa hoa rực rỡ dành riêng cho cô em gái nhỏ!",
+    title: "Chúc Mừng 20/10 - Thương Gửi Bạn Chang 💐",
+    description: "Chạm vào đóa hoa để mở bức thư yêu thương và cơn mưa hoa rực rỡ dành riêng cho bạn Chang!",
     type: "website",
   },
 };

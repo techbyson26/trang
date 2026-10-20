@@ -35,6 +35,11 @@
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.envelope:hover {
+  border-color: rgba(246, 200, 106, 0.6);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 45px rgba(246, 200, 106, 0.35);
+}
+
 /* Triangular Envelope Flap */
 .envelopeFlap {
   position: absolute;
@@ -98,24 +103,24 @@
   border: 2px dashed rgba(255, 220, 230, 0.45);
   transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.35s ease;
   z-index: 10;
-  margin-top: 10px;
-  flex-shrink: 0;
 }
 
-.envelopeWrapper:hover .waxSeal {
-  transform: scale(1.1) rotate(6deg);
+.envelope:hover .waxSeal {
+  transform: scale(1.08) rotate(3deg);
   box-shadow: 
-    0 14px 34px rgba(0, 0, 0, 0.7),
-    0 0 0 4px rgba(180, 16, 58, 0.9),
-    0 0 0 7px rgba(255, 105, 135, 0.5),
-    0 0 35px rgba(255, 67, 113, 0.9);
+    0 12px 32px rgba(0, 0, 0, 0.7),
+    0 0 0 4px rgba(180, 16, 58, 0.8),
+    0 0 0 7px rgba(246, 200, 106, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.6),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.6),
+    0 0 35px rgba(255, 67, 113, 0.8);
 }
 
 .sealInnerRing {
   width: 58px;
   height: 58px;
   border-radius: 50%;
-  border: 1px dashed rgba(255, 230, 240, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -164,24 +169,100 @@
 .envelopeSub {
   position: relative;
   z-index: 5;
-  margin-top: 6px;
-  font-size: 12.5px;
+  margin-top: 8px;
+  font-size: 13px;
   color: var(--accent-gold);
   opacity: 0.95;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* The Opened Letter Content */
-.letterPaper {
-  width: 100%;
-  background: linear-gradient(135deg, #fffdfa 0%, #fff6ee 100%);
-  border-radius: 14px;
-  color: #381023;
-  padding: 32px 28px;
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.5), inset 0 0 60px rgba(255, 230, 210, 0.6);
-  border: 1px solid rgba(246, 200, 106, 0.5);
+.subIcon {
+  color: var(--accent-gold);
+  animation: pulseGentle 2s ease-in-out infinite;
+}
+
+@keyframes pulseGentle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+
+/* =========================================
+   POPUP MODAL DIALOG STYLES
+   ========================================= */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 3, 11, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 24px 16px;
+  animation: overlayFadeIn 0.3s ease forwards;
+}
+
+.modalPaper {
   position: relative;
-  animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  width: 100%;
+  max-width: 660px;
+  max-height: 88vh;
+  overflow-y: auto;
+  background: linear-gradient(145deg, #fffefd 0%, #fff6ef 100%);
+  border-radius: 20px;
+  color: #381023;
+  padding: 36px 32px 32px;
+  box-shadow: 
+    0 25px 70px rgba(0, 0, 0, 0.75),
+    0 0 50px rgba(255, 67, 113, 0.35),
+    inset 0 0 60px rgba(255, 230, 210, 0.6);
+  border: 2px solid rgba(246, 200, 106, 0.75);
+  animation: modalZoomIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom smooth scrollbar */
+.modalPaper::-webkit-scrollbar {
+  width: 6px;
+}
+.modalPaper::-webkit-scrollbar-track {
+  background: rgba(255, 220, 230, 0.3);
+  border-radius: 4px;
+}
+.modalPaper::-webkit-scrollbar-thumb {
+  background: rgba(255, 67, 113, 0.5);
+  border-radius: 4px;
+}
+.modalPaper::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 67, 113, 0.8);
+}
+
+.closeModalBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(180, 50, 90, 0.1);
+  border: 1px solid rgba(180, 50, 90, 0.25);
+  color: #930d37;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 10;
+}
+
+.closeModalBtn:hover {
+  background: #ff4371;
+  color: #fff;
+  border-color: #ff4371;
+  transform: rotate(90deg) scale(1.08);
 }
 
 .paperHeader {
@@ -191,12 +272,13 @@
   border-bottom: 1px dashed rgba(180, 50, 90, 0.25);
   padding-bottom: 14px;
   margin-bottom: 20px;
+  padding-right: 40px;
   gap: 12px;
   flex-wrap: wrap;
 }
 
 .paperGreeting {
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 700;
   color: #930d37;
   font-family: var(--font-playfair);
@@ -252,7 +334,7 @@
 }
 
 .letterActions {
-  margin-top: 20px;
+  margin-top: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -303,9 +385,27 @@
   color: #4a152d;
 }
 
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 @media (max-width: 640px) {
-  .letterPaper {
-    padding: 22px 16px;
+  .modalPaper {
+    padding: 24px 18px;
+    max-height: 92vh;
+    border-radius: 16px;
   }
   .paperGreeting {
     font-size: 17px;
@@ -330,5 +430,11 @@
   }
   .sealText {
     font-size: 7.5px;
+  }
+  .closeModalBtn {
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
   }
 }

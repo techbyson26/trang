@@ -39,7 +39,7 @@ export default function HeaderNav({ onReset, onOpenPersonalize }: HeaderNavProps
     <nav className={styles.headerNav}>
       <div className={styles.brand} onClick={onReset} title="Về lại đóa hoa ban đầu">
         <Flower2 className={styles.brandFlower} size={20} />
-        <span className={styles.brandText}>20/10 Gửi Tặng Em Thanh 🌸</span>
+        <span className={styles.brandText}>20/10 Gửi Tặng Bạn Chang 🌸</span>
       </div>
 
       <div className={styles.actions}>
